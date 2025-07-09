@@ -1,9 +1,15 @@
 import { useContext, useState } from "react";
 import AuthContext from "../context/AuthContext";
+import emailjs from 'emailjs-com';
+
+
 export default function User() {
   const {user, setUser} = useContext(AuthContext);
   const [loading, setLoading] = useState(false);
   const [loginModal, setLoginModal] = useState(false);
+  const [mail, setMail] = useState('');
+  const [cPin, setCPin] = useState(null);
+  const [SPin, setSPin] = useState(null);
 
   function handleLogin(){
    setLoading(true);
@@ -12,6 +18,40 @@ export default function User() {
    setLoginModal(true); 
    },2000)
   }
+  function sendPin(){
+    setLoading(true);
+    const PIN = Math.floor(1000 + Math.random() * 9000); 
+    setCPin(PIN);
+            
+
+            // Send actual email with PIN
+            emailjs.send(
+                "service_6vjrpop",          
+                "template_5ri4xxa",         
+                {
+                    email: mail,
+                    pin_code: PIN
+                },
+                "cm1wHY7sIZ75KbKOv"        
+            ).then(() => {
+                console.log("sent");
+                setLoading(false);
+                // we can later add notification  
+                
+            }).catch((error) => {
+                console.error("EmailJS Error:", error);
+                setLoading(false);
+                
+            });
+  }
+  function checkPin(e){
+      setSPin(e.target.value);
+      if( cPin === parseInt(e.target.value)){
+        setLoginModal(false);
+        console.log("yaha samma bhayo! aba setUser garera context ma lagna parne bhayo. also got to fix the animation part or just notification dida ni hunchha");
+      }
+  }
+
   return (
     <>
     <div className="relative flex items-center gap-3 px-4 py-2">
@@ -21,13 +61,16 @@ export default function User() {
     {/* Row: Email + Button */}
     <div className="flex items-center gap-2">
       <input
+        value={mail}
+        onChange={(e)=>setMail(e.target.value)}
         type="email"
         placeholder="Email"
         className="border border-gray-300 rounded px-2 py-[2px] text-xs w-[120px] focus:outline-none focus:ring-1 focus:ring-gray-800"
       />
       <input
+        onClick={(e)=>sendPin(e)}
         type="button"
-        value="Send PIN"
+        value={`${loading ? 'Sending..' : 'Send Pin' }`}
         className="bg-gray-800 text-white text-xs py-[3px] px-3 rounded hover:bg-gray-700 cursor-pointer"
       />
     </div>
@@ -35,6 +78,8 @@ export default function User() {
     {/* Row 2: PIN input + Close button */}
     <div className="mt-2 flex items-center gap-2">
       <input
+        value={SPin}
+        onChange={checkPin}
         type="number"
         placeholder="XXXX"
         className="border border-gray-300 rounded px-2 py-[2px] text-xs w-[100px] focus:outline-none focus:ring-1 focus:ring-gray-800"
