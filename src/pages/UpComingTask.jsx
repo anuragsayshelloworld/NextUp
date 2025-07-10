@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
 import { CheckCircle } from "lucide-react";
 import { format, addDays } from "date-fns";
+import { useContext } from "react";
+import AuthContext from "../context/AuthContext";
 
 export default function UpComingTask() {
-  const user = "anurag"; // pretend this comes from context
+  const {user} = useContext(AuthContext);
+  console.log(user);
   const [filteredTasksByDay, setFilteredTasksByDay] = useState([[], [], []]);
 
   useEffect(() => {
@@ -24,7 +27,7 @@ export default function UpComingTask() {
     }
 
     setFilteredTasksByDay(buckets);
-  }, []);
+  }, [user]);
 
   const labels = ["Today", "Tomorrow", "Day After Tomorrow"];
 

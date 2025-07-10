@@ -48,7 +48,8 @@ export default function User() {
       setSPin(e.target.value);
       if( cPin === parseInt(e.target.value)){
         setLoginModal(false);
-        console.log("yaha samma bhayo! aba setUser garera context ma lagna parne bhayo. also got to fix the animation part or just notification dida ni hunchha");
+        setUser(mail);
+        localStorage.setItem("Token", mail);
       }
   }
 
@@ -100,9 +101,17 @@ export default function User() {
       </div>
 
       {/* User Label */}
-      <p className="text-sm text-gray-700 font-medium border shadow-sm p-3 hover:bg-gray-100 cursor-pointer w-[160px]"
-      onClick={user ? undefined : handleLogin}>{user ? user : `${loading ? 'Hang on a bit...' : 'Login to allow usage'}`}</p>
-    </div>
+      
+      <p
+  className={`text-gray-700 font-medium border shadow-sm p-2 hover:bg-gray-100 cursor-pointer ${
+    user ? 'w-[200px] text-xs' : 'w-[160px] text-sm'
+  }`}
+  onClick={user ? undefined : handleLogin}
+>
+  {user ? user : loading ? 'Hang on a bit...' : 'Login to allow usage'}
+</p>
+
+          </div>
     </>
   );
 }
