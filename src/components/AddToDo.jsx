@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useContext } from "react";
 import AuthContext from "../context/AuthContext";
 import TaskListContext from "../context/TaskListContext";
@@ -9,6 +9,7 @@ export default function AddToDo() {
   const [taskCompletionDate, setTaskCompletionDate] = useState('');
   const [taskName, setTaskName] = useState('');
   const [loading, setLoading] = useState(false);
+  const inputRef = useRef();
 
   function handleAdd(event){
     event.preventDefault();
@@ -20,20 +21,36 @@ export default function AddToDo() {
     }
     const taskList = JSON.parse(localStorage.getItem("taskList")) || [];
     const updatedTaskList = [...taskList, task];
-    setList(updatedTaskList);
     localStorage.setItem("taskList", JSON.stringify(updatedTaskList));
     
     setTimeout(()=>{
     setLoading(false);
     setTaskCompletionDate('');
-    setTaskName(''); 
+    setTaskName('');
+    setList(updatedTaskList); 
     }, 2000)
   }
+
+  useEffect(()=>{
+    function handlekeydown(e){
+     if(e.ctrlKey && e.key.toLowerCase() === 'k'){
+      e.preventDefault();
+      inputRef.current.focus();
+     } 
+    }
+   window.addEventListener("keydown", handlekeydown);
+   return () => {
+    window.removeEventListener("keydown", handlekeydown);
+   }
+  },[]);
+
+
   return (
     <form onSubmit={handleAdd} className="flex items-center gap-3 w-full max-w-2xl px-4">
       {/* Task input */}
       <input 
         type="text"
+        ref={inputRef}
         value={taskName}
         onChange={(e)=>setTaskName(e.target.value)} 
         placeholder="Ctrl + K" 

@@ -8,12 +8,62 @@ import {
   Star,
   BarChart2,
 } from "lucide-react";
+import { useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
 export default function Menu() {
+
   const navigate = useNavigate();
   const location = useLocation();
   const current = location.pathname;
+
+
+  useEffect(() => {
+  function handleKeyDown(e) {
+    
+    if (e.ctrlKey && e.key.toLowerCase() === 'h') {
+      e.preventDefault();
+      navigate('/');
+    }
+
+    if (e.ctrlKey && e.key.toLowerCase() === 'q') {
+      e.preventDefault();
+      navigate('/alltasks');
+    }
+    
+    if (e.ctrlKey && e.key.toLowerCase() === 'c') {
+      e.preventDefault();
+      navigate('/completed');
+    }
+      if (e.ctrlKey && e.key.toLowerCase() === 'd') {
+      e.preventDefault();
+      navigate('/deleted');
+    }
+    
+    if (e.ctrlKey && e.key.toLowerCase() === 'a') {
+    e.preventDefault();
+    navigate('/archived');
+    }
+    
+    if (e.ctrlKey && e.key.toLowerCase() === 'i') {
+      e.preventDefault();
+      navigate('/incomplete');
+    }
+    
+    if (e.ctrlKey && e.key.toLowerCase() === 'b') {
+      e.preventDefault();
+      navigate('/bucket');
+    }
+    if (e.ctrlKey && e.key.toLowerCase() === 's') {
+      e.preventDefault();
+      navigate('/stats');
+    }
+  }
+  window.addEventListener('keydown', handleKeyDown);
+  return () => {
+    window.removeEventListener('keydown', handleKeyDown);
+  };
+}, [navigate]);
 
   return (
     <div className="flex flex-col gap-2 p-4 text-sm text-gray-800">
@@ -37,7 +87,7 @@ export default function Menu() {
           <ListTodo size={16} />
           <span>Tasks</span>
         </div>
-        <kbd className="text-xs bg-gray-200 text-gray-700 px-2 py-0.5 rounded border">Ctrl + T</kbd>
+        <kbd className="text-xs bg-gray-200 text-gray-700 px-2 py-0.5 rounded border">Ctrl + Q</kbd>
       </div>
 
       <div

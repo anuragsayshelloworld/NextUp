@@ -7,6 +7,7 @@ import { useContext } from "react";
 
 function Layout({children}) {
     const {user, setUser} = useContext(AuthContext);
+    
 
  
     return (
