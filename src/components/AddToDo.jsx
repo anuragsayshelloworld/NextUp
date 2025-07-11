@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { useContext } from "react";
 import AuthContext from "../context/AuthContext";
+import TaskListContext from "../context/TaskListContext";
 
 export default function AddToDo() {
+  const {setList} = useContext(TaskListContext);
   const {user} = useContext(AuthContext);
   const [taskCompletionDate, setTaskCompletionDate] = useState('');
   const [taskName, setTaskName] = useState('');
@@ -18,6 +20,7 @@ export default function AddToDo() {
     }
     const taskList = JSON.parse(localStorage.getItem("taskList")) || [];
     const updatedTaskList = [...taskList, task];
+    setList(updatedTaskList);
     localStorage.setItem("taskList", JSON.stringify(updatedTaskList));
     
     setTimeout(()=>{
