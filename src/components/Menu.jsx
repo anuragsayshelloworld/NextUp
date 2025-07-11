@@ -20,6 +20,8 @@ export default function Menu() {
 
   useEffect(() => {
   function handleKeyDown(e) {
+
+    if(e.shiftKey){ return null};
     
     if (e.ctrlKey && e.key.toLowerCase() === 'h') {
       e.preventDefault();

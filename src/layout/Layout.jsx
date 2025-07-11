@@ -8,8 +8,6 @@ import { useContext } from "react";
 function Layout({children}) {
     const {user, setUser} = useContext(AuthContext);
     
-
- 
     return (
         <div className="flex w-screen h-screen">
             <div className="w-[280px] border flex flex-col">{/*Left Navbar*/}
