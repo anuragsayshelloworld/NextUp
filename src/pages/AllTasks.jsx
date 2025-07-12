@@ -23,11 +23,18 @@ const stillValid = [];
 const movedToIncomplete = JSON.parse(localStorage.getItem("incomplete")) || [];
 let changed = false;
 
-requiredList.forEach(task => {
-if (task.taskCompletionDate === yesterday) {
-movedToIncomplete.push(task);
+const tasksToMove = requiredList.filter(task => 
+task.taskCompletionDate === yesterday &&
+!movedToIncomplete.some(t => t.taskName === task.taskName && t.taskCompletionDate === task.taskCompletionDate)
+);
+
+if (tasksToMove.length > 0) {
+movedToIncomplete.push(...tasksToMove);
 changed = true;
-} else {
+}
+
+requiredList.forEach(task => {
+if (task.taskCompletionDate !== yesterday) {
 stillValid.push(task);
 }
 });
@@ -38,6 +45,7 @@ localStorage.setItem("taskList", JSON.stringify(stillValid));
 setList(stillValid);
 }
 }, [list, user, setList, requiredList]);
+
 
 const updateStorageAndContext = (filtered) => {
 localStorage.setItem("taskList", JSON.stringify(filtered));

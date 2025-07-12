@@ -54,7 +54,7 @@ export default function Menu() {
     
     if (e.ctrlKey && e.key.toLowerCase() === 'b') {
       e.preventDefault();
-      navigate('/bucket');
+      navigate('/bucketlist');
     }
     if (e.ctrlKey && e.key.toLowerCase() === 's') {
       e.preventDefault();
