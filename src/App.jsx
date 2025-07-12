@@ -3,6 +3,8 @@ import { Routes, Route } from 'react-router-dom';
 import Layout from './layout/Layout';
 import UpComingTask from './pages/UpComingTask';
 import AllTasks from './pages/AllTasks';
+import ErrorBoundary from '../ErrorBoundary';
+import LoadingSpinner from './shared/LoadingSpinner';
 
 const Deleted = React.lazy(() => import('./pages/Deleted'));
 const Completed = React.lazy(() => import('./pages/Completed'));
@@ -11,16 +13,10 @@ const Incomplete = React.lazy(() => import('./pages/Incomplete'));
 const BucketList = React.lazy(() => import('./pages/BucketList'));
 const Statistics = React.lazy(() => import('./pages/Statistics'));
 
-function LoadingSpinner() {
-  return (
-    <div className="flex justify-center items-center h-screen">
-      <div className="w-12 h-12 border-4 border-blue-500 border-dashed rounded-full animate-spin"></div>
-    </div>
-  );
-}
 
 function App() {
   return (
+    <ErrorBoundary>
     <Layout>
       <Suspense fallback={<LoadingSpinner />}>
         <Routes>
@@ -35,6 +31,7 @@ function App() {
         </Routes>
       </Suspense>
     </Layout>
+    </ErrorBoundary>
   );
 }
 
